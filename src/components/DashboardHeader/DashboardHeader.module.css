@@ -1,0 +1,38 @@
+.container
+{
+    width: 60%;
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2em;
+}
+
+.header
+{
+    color: var(--primary-text-color);
+}
+
+.linksDiv
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.link
+{
+    cursor: pointer;
+    margin-left: 2em;
+    text-decoration: none;
+    color: var(--secondary-text-color);
+    transition: var(--default-transition);
+}
+
+.link:hover
+{
+    color: var(--primary-text-color);
+    transition: var(--default-transition);
+}

@@ -1,0 +1,113 @@
+.container
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4rem;
+    flex-direction: column;
+}
+
+.header
+{
+    color: var(--primary-text-color);
+}
+
+.searchAndFilterDiv
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.searchDiv
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 2em;
+    margin-left: 2em;
+}
+
+.input
+{
+    margin-top: 1.5em;
+    padding: 1em;
+    outline: none;
+    border: 1px solid rgba(132, 204, 22, 0.5);
+    border-radius: var(--default-border-radius);
+    background-color: transparent;
+    color: var(--primary-text-color);
+    transition: var(--default-transition);
+}
+
+.input:focus
+{
+    border: 1px solid rgba(132, 204, 22);
+    transition: var(--default-transition);
+}
+
+
+
+.filterDiv
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 2em;
+    margin-left: 2em;
+}
+
+.checkboxButtonDivContainer
+{
+    margin-top: 1.5em;
+    display: flex;
+    flex-direction: row;
+}
+
+.checkboxButtonDiv
+{
+    display: flex;
+    flex-direction: column;
+    margin-left: 1em;
+    margin-right: 1em;
+    align-items: center;
+}
+
+.checkboxButtonText
+{
+    color: var(--primary-text-color);
+    margin-bottom: 1em;
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary-text-color);
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    background-color: transparent;
+    cursor: pointer;
+    transition: var(--default-transition);
+}
+
+input[type="checkbox"]:checked {
+    background-color: var(--primary-text-color);
+    border-color: white;
+    transition: var(--default-transition);
+}
+
+input[type="checkbox"]:checked::after {
+    content: '✔';
+    font-size: 12px;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    transition: var(--default-transition);
+}
