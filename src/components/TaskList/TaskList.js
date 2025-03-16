@@ -88,7 +88,7 @@ export default function TaskList({ tasks = [], onSaveOrder }) {
 
                     <div className={taskListStyles.buttonDiv}>
                         <button
-                            className={`${taskListStyles.button} ${hasChanged ? taskListStyles.buttonActive : ''}`}
+                            className={`${taskListStyles.button} ${!hasChanged ? taskListStyles.buttonActive : ''}`}
                             onClick={handleSaveOrder}
                             disabled={!hasChanged}
                         >
