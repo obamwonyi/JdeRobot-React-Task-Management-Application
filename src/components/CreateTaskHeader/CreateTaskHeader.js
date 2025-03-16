@@ -25,11 +25,11 @@ export default function CreateTaskHeader({ onNavigate, activeComponent }) {
 
             <button
                 className={`${createTaskHeaderStyles.button} ${
-                    activeComponent === 'HowTo' ? createTaskHeaderStyles.active : ''
+                    activeComponent === 'FAQ' ? createTaskHeaderStyles.active : ''
                 }`}
-                onClick={() => onNavigate('HowTo')}
+                onClick={() => onNavigate('FAQ')}
             >
-                How To
+                FAQ
             </button>
         </div>
     );

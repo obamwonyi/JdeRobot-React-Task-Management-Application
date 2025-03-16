@@ -61,7 +61,7 @@ export default function AddTask()
                 </div>
 
                 <div className={addTaskStyles.inputDiv}>
-                    <label className={addTaskStyles.label} htmlFor="title">Task (what you intend to do)</label>
+                    <label className={addTaskStyles.label} htmlFor="title">Description</label>
                     <textarea
                         className={addTaskStyles.task}
                         value={taskValue}

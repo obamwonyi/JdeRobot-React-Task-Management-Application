@@ -1,5 +1,5 @@
-import howToStyles from "./HowTo.module.css";
-export default function HowTo()
+import howToStyles from "./FAQ.module.css";
+export default function FAQ()
 {
     return (
         <div className={howToStyles.container}>
