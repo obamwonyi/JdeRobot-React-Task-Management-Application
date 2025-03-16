@@ -1,0 +1,40 @@
+.container {
+    margin: 3em auto 2em auto;
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+    height: 4em;
+    background-color: transparent;
+    border: 1px solid var(--primary-text-color-hover);
+    transition: var(--1sec-transition);
+    border-radius: 10px;
+    overflow: hidden;
+    position: sticky;
+    z-index: 1;
+}
+
+.container:hover {
+    border: 1px solid var(--primary-text-color);
+    transition: var(--1sec-transition);
+}
+
+.button {
+    flex: 1;
+    border: 0;
+    outline: none;
+    font-size: 16px;
+    background: transparent;
+    color: var(--primary-text-color-hover);
+    transition: var(--1sec-transition);
+}
+
+.button:hover {
+    background: var(--primary-text-color);
+    color: white;
+    transition: var(--1sec-transition);
+}
+
+.active {
+    background: var(--primary-text-color);
+    color: white;
+}

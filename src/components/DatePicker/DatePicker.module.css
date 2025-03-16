@@ -1,0 +1,98 @@
+.datePicker {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: transparent;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.monthTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+.navButton {
+    background-color: transparent;
+    border: none;
+    opacity: 0.5;
+    transition: var(--1sec-transition);
+}
+
+.navButton:hover {
+    opacity: 1;
+    transition: var(--1sec-transition);
+}
+
+.navButtonSvg
+{
+    height: 30px;
+    width: 30px;
+}
+
+.navButtonSvgLeft
+{
+    transform: rotate(180deg);
+    height: 25px;
+    width: 25px;
+}
+
+
+
+.weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.weekday {
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #9ca3af;
+}
+
+.calendarGrid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.25rem;
+}
+
+.dayCell {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    color: #6b7280;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.dayCell:hover {
+    background-color: var(--primary-text-color);
+    color: white;
+}
+
+.selectedDay {
+    background-color: var(--primary-text-color);
+    color: white;
+}
+
+.emptyCell {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.selectedDate {
+    margin-top: 1rem;
+    text-align: center;
+    color: #4b5563;
+}

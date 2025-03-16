@@ -1,0 +1,64 @@
+.customSelect {
+    position: relative;
+    width: 10em;
+    user-select: none;
+}
+
+.selectHeader {
+    width: 100%;
+    padding: 8px;
+    background: transparent;
+    border: 1px solid var(--primary-text-color-hover);
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.arrow {
+    font-size: 10px;
+    transition: transform 0.3s ease;
+}
+
+.arrowUp {
+    transform: rotate(180deg);
+}
+
+.optionsContainer {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    border: 1px solid var(--primary-text-color-hover);
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 100;
+    background-image: url(/public/backgroundImage.svg);
+}
+
+.optionItem {
+    padding: 8px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--primary-text-color-hover);
+    transition: var(--1sec-transition);
+}
+
+.optionItem:hover {
+    background-color: var(--primary-text-color);
+    transition: var(--1sec-transition);
+}
+
+.optionItem:last-child {
+    border-bottom: none;
+}
+
+.optionItem:hover {
+    background-color: rgba(var(--primary-text-color, 0, 0, 0), 0.1);
+}
+
+.selected {
+    background-color: rgba(var(--primary-text-color, 0, 0, 0), 0.2);
+}

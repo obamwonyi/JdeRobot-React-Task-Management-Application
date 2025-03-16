@@ -1,0 +1,33 @@
+.container
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 1em;
+    left: 1em;
+}
+
+.button
+{
+    width: 100px;
+    height: 40px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    justify-content: center;
+    background: transparent;
+    color: var(--primary-text-color-hover);
+    text-align: center;
+    border: 1px solid var(--primary-text-color-hover);
+    transition: var(--1sec-transition);
+}
+
+.button:hover
+{
+    background: var(--primary-text-color);
+    border: 1px solid var(--primary-text-color);
+    transition: var(--1sec-transition);
+    color: white;
+}
