@@ -34,6 +34,8 @@
     font-size: 16px;
     font-weight: bold;
     margin-bottom: 0.5em;
+    display: flex;
+    align-items: center;
 }
 
 .title
@@ -110,5 +112,12 @@
     border: 1px solid var(--primary-text-color);
     background-color: var(--primary-text-color);
     transition: var(--1sec-transition);
+}
+
+.asterisk
+{
+    height: 16px;
+    width: 16px;
+    margin-left: 5px;
 }
 

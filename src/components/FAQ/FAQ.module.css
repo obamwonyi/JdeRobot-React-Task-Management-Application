@@ -1,5 +1,72 @@
-.container
-{
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.faqItem {
+    border: 1px solid var(--primary-text-color);
+    margin-bottom: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.faqHeader {
+    padding: 15px;
+    background: transparent;
+    color: var(--primary-text-color);
+    cursor: pointer;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    transition: var(--default-transition);
+}
+
+.faqHeader:hover {
+    background: var(--primary-text-color);
     color: white;
+    transition: var(--default-transition);
+}
+
+.faqContent {
+    padding: 0 15px;
+    background: transparent;
+    color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+}
+
+.faqContent.open {
+    padding: 15px;
+    max-height: 200px;
+    border-top: 1px solid var(--primary-text-color);
+}
+
+.arrow{
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease-out;
+    transform: rotate(180deg);
+}
+
+.arrowOpen {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease-out;
+    transform: rotate(90deg);
+}
+
+.header
+{
+    color: #fff;
+    font-weight: bold;
+}
+
+.innerContainer
+{
+    margin-top: 1em;
+    width: 100%;
 }

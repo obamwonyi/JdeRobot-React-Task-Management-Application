@@ -2,6 +2,7 @@ import addTaskStyles from "./AddTask.module.css";
 import {useState} from "react";
 import DropDownButton from "../DropDownButton/DropDownButton";
 import DatePicker from "../DatePicker/DatePicker";
+import {ReactComponent as Asterisk} from "../../assets/icons/asterisk.svg";
 
 export default function AddTask()
 {
@@ -51,7 +52,7 @@ export default function AddTask()
             <div className={addTaskStyles.leftDiv}>
 
                 <div className={addTaskStyles.inputDiv}>
-                    <label className={addTaskStyles.label} htmlFor="title">Title</label>
+                    <label className={addTaskStyles.label} htmlFor="title">Title <Asterisk className={addTaskStyles.asterisk} /></label>
                     <input
                         className={addTaskStyles.title}
                         type="text"
@@ -61,7 +62,7 @@ export default function AddTask()
                 </div>
 
                 <div className={addTaskStyles.inputDiv}>
-                    <label className={addTaskStyles.label} htmlFor="title">Description</label>
+                    <label className={addTaskStyles.label} htmlFor="title">Description <Asterisk className={addTaskStyles.asterisk} /></label>
                     <textarea
                         className={addTaskStyles.task}
                         value={taskValue}
