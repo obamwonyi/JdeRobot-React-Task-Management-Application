@@ -1,18 +1,38 @@
-import React, { useState } from 'react';
-import loginStyles from "../styles/pages/Login.module.css";
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
+import loginStyles from "../styles/pages/Login.module.css";
+import signUpStyles from "../styles/pages/SignUp.module.css";
 import HomeFloatButton from "../components/HomeFloatButton/HomeFloatButton";
-
 import EyeIcon from '../assets/icons/eye.svg';
 import EyeSlashIcon from '../assets/icons/eyeSlash.svg';
-import signUpStyles from "../styles/pages/SignUp.module.css";
+import { loginUser, fetchUserProfile, clearAuthErrors } from '../store/auth/authActions';
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [emailError, setEmailError] = useState('');
-    const [error, setError] = useState('');
+    const [localError, setLocalError] = useState('');
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const { loading, error, isAuthenticated, user } = useSelector(state => state.auth);
+
+    // Redirect if already authenticated
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/dashboard');
+        }
+    }, [isAuthenticated, navigate]);
+
+    useEffect(() => {
+        return () => {
+            dispatch(clearAuthErrors());
+        };
+    }, [dispatch]);
 
     const validateEmail = (email) => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -22,7 +42,7 @@ export default function Login() {
     const handleEmailChange = (e) => {
         const value = e.target.value;
         setEmail(value);
-        if (!validateEmail(value)) {
+        if (value && !validateEmail(value)) {
             setEmailError('Invalid email format');
         } else {
             setEmailError('');
@@ -38,7 +58,7 @@ export default function Login() {
         setShowPassword(!showPassword);
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
 
         if (!validateEmail(email)) {
@@ -47,18 +67,25 @@ export default function Login() {
         }
 
         if (!password) {
-            setError('Password is required');
+            setLocalError('Password is required');
             return;
         }
 
-        setError('');
+        setLocalError('');
         setEmailError('');
 
+        // Dispatch login action
+        dispatch(loginUser({ email, password }));
     };
+
+    useEffect(() => {
+        if (isAuthenticated && !user) {
+            dispatch(fetchUserProfile());
+        }
+    }, [isAuthenticated, user, dispatch]);
 
     return (
         <div className={loginStyles.container}>
-
             <HomeFloatButton />
 
             <h1 className={loginStyles.h1}>Login</h1>
@@ -68,6 +95,7 @@ export default function Login() {
                     <label className={loginStyles.label} htmlFor="email">Email</label>
                     <input
                         type="email"
+                        id="email"
                         className={loginStyles.input}
                         value={email}
                         onChange={handleEmailChange}
@@ -81,6 +109,7 @@ export default function Login() {
                     <div style={{ position: 'relative' }}>
                         <input
                             type={showPassword ? "text" : "password"}
+                            id="password"
                             className={loginStyles.input}
                             value={password}
                             onChange={handlePasswordChange}
@@ -105,12 +134,23 @@ export default function Login() {
                     </div>
                 </div>
 
-                {/* Display general error message */}
+                {/* Display errors - local and from Redux */}
+                {localError && <div className={loginStyles.error}>{localError}</div>}
                 {error && <div className={loginStyles.error}>{error}</div>}
 
                 <div className={loginStyles.buttonDiv}>
-                    <button type="submit" className={loginStyles.button}>Login</button>
+                    <button
+                        type="submit"
+                        className={loginStyles.button}
+                        disabled={loading}
+                    >
+                        {loading ? 'Logging in...' : 'Login'}
+                    </button>
                     <Link to="/signup" className={signUpStyles.button}>Go To SignUp</Link>
+                </div>
+
+                <div className={loginStyles.forgotPassword}>
+                    <Link to="/forgot-password">Forgot Password?</Link>
                 </div>
             </form>
         </div>

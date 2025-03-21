@@ -1,10 +1,12 @@
-import { configureStore } from '@reduxjs/toolkit'
-import taskReducer from "./slices/taskSlice";
-import filterReducer from "./slices/filterSlice";
+import { createStore, applyMiddleware } from 'redux';
+import { thunk } from 'redux-thunk'; // Use named import
+import { composeWithDevTools } from '@redux-devtools/extension';
+import rootReducer from './rootReducer';
 
-export const store = configureStore({
-    reducer: {
-        task: taskReducer,
-        filters: filterReducer,
-    },
-});
+// Creating the Store with middleware
+const store = createStore(
+    rootReducer,
+    composeWithDevTools(applyMiddleware(thunk)) // Apply thunk middleware
+);
+
+export default store;
