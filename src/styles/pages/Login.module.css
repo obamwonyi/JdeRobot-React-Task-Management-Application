@@ -94,3 +94,21 @@
     font-size: 14px;
     margin-top: 5px;
 }
+
+.forgotPasswordDiv
+{
+    margin-top: 1em;
+}
+
+.forgotPassword
+{
+    text-decoration: none;
+    color: var(--primary-text-color-hover);
+    transition: var(--default-transition);
+}
+
+.forgotPassword:hover
+{
+    color: var(--primary-text-color);
+    transition: var(--default-transition);
+}

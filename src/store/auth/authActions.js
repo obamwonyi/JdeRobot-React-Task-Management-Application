@@ -22,7 +22,7 @@ export const loginUser = (credentials) => async (dispatch) => {
     dispatch({ type: LOGIN_REQUEST });
 
     try {
-        const response = await axios.post(`${API_BASE_URL}/`, credentials, {
+        const response = await axios.post(`${API_BASE_URL}/token/`, credentials, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -30,22 +30,31 @@ export const loginUser = (credentials) => async (dispatch) => {
 
         const { access, refresh, user } = response.data;
 
+        // Store tokens in sessionStorage
         sessionStorage.setItem('access_token', access);
         sessionStorage.setItem('refresh_token', refresh);
+
+        // Log tokens for debugging (remove in production)
+        console.log('Tokens received:', { access, refresh });
 
         dispatch({
             type: LOGIN_SUCCESS,
             payload: {
                 token: access,
-                user: user, // If your API returns user data
+                refreshToken: refresh, // Make sure this matches your reducer
+                user: user,
             },
         });
+
+        return { success: true };
     } catch (error) {
+        console.error('Login error:', error.response?.data || error.message);
         const errorMessage = error.response?.data?.error || error.response?.data?.detail || 'Login failed';
         dispatch({
             type: LOGIN_FAILURE,
             payload: errorMessage,
         });
+        return { success: false, error: errorMessage };
     }
 };
 
@@ -53,6 +62,7 @@ export const loginUser = (credentials) => async (dispatch) => {
 export const logoutUser = () => (dispatch) => {
     sessionStorage.removeItem('access_token');
     sessionStorage.removeItem('refresh_token');
+    sessionStorage.removeItem('user_data');
 
     dispatch({
         type: LOGOUT,
@@ -64,7 +74,7 @@ export const signupUser = (userData) => async (dispatch) => {
     dispatch({ type: SIGNUP_REQUEST });
 
     try {
-        const response = await axios.post(`${API_BASE_URL}/user`, userData, {
+        const response = await axios.post(`${API_BASE_URL}/user/`, userData, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -78,11 +88,9 @@ export const signupUser = (userData) => async (dispatch) => {
         dispatch(successAction);
         return successAction;
     } catch (error) {
-        console.log('API Error:', error.response?.data || error.message);
 
-        // Extract the error message from the backend response
         const errorMessage =
-            error.response?.data?.email?.[0] || // Check for email-specific error
+            error.response?.data?.email?.[0] ||
             error.response?.data?.error ||
             error.response?.data?.detail ||
             'Signup failed';
@@ -98,30 +106,58 @@ export const signupUser = (userData) => async (dispatch) => {
     }
 };
 
-// Fetch user profile action
+// Fetch user profile action - UPDATED with correct endpoint
 export const fetchUserProfile = () => async (dispatch, getState) => {
     dispatch({ type: FETCH_USER_REQUEST });
 
     try {
-        const token = getState().auth.token;
+        const token = getState().auth.token || sessionStorage.getItem('access_token');
 
-        const response = await axios.get(`${API_BASE_URL}/users/me/`, {
+        if (!token) {
+            throw new Error('No authentication token found');
+        }
+
+        // Using the correct endpoint from your API docs
+        const response = await axios.get(`${API_BASE_URL}/user/me/`, {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
         });
 
+        // Store user data in session storage as backup
+        sessionStorage.setItem('user_data', JSON.stringify(response.data));
+
         dispatch({
             type: FETCH_USER_SUCCESS,
             payload: response.data,
         });
+
+        return response.data;
     } catch (error) {
+        console.error('Fetch user error:', error.response?.data || error.message);
         const errorMessage = error.response?.data?.error || error.response?.data?.detail || 'Failed to fetch user profile';
         dispatch({
             type: FETCH_USER_FAILURE,
             payload: errorMessage,
         });
+
+        // Try to recover user data from session storage if available
+        const cachedUser = sessionStorage.getItem('user_data');
+        if (cachedUser) {
+            try {
+                const userData = JSON.parse(cachedUser);
+                dispatch({
+                    type: FETCH_USER_SUCCESS,
+                    payload: userData,
+                });
+                return userData;
+            } catch (e) {
+                console.error('Error parsing cached user data', e);
+            }
+        }
+
+        throw error;
     }
 };
 
@@ -132,7 +168,7 @@ export const clearAuthErrors = () => ({
 
 // Refresh token action
 export const refreshToken = () => async (dispatch, getState) => {
-    const refreshToken = getState().auth.refreshToken;
+    const refreshToken = getState().auth.refreshToken || sessionStorage.getItem('refresh_token');
 
     if (!refreshToken) {
         return;
@@ -157,8 +193,12 @@ export const refreshToken = () => async (dispatch, getState) => {
                 token: access,
             },
         });
+
+        return access;
     } catch (error) {
+        console.error('Token refresh error:', error.response?.data || error.message);
         // If refresh fails, log the user out
         dispatch(logoutUser());
+        throw error;
     }
 };

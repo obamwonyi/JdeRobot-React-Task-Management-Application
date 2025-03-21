@@ -155,6 +155,41 @@ export const deleteTask = (id) => async (dispatch, getState) => {
     }
 };
 
+export const bulkUpdateTasks = (tasksData) => async (dispatch, getState) => {
+    dispatch({
+        type: UPDATE_TASK_REQUEST
+    });
+
+    try {
+        const token = getState().auth.token;
+
+        const response = await fetch('/api/tasks/bulk_update/', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(tasksData)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || data.detail || 'Failed to bulk update tasks');
+        }
+
+        dispatch({
+            type: UPDATE_TASK_SUCCESS,
+            payload: data
+        });
+    } catch (error) {
+        dispatch({
+            type: UPDATE_TASK_FAILURE,
+            payload: error.message
+        });
+    }
+};
+
 export const clearTaskErrors = () => ({
     type: CLEAR_TASK_ERRORS
 });

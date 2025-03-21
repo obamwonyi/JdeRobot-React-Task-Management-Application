@@ -4,7 +4,7 @@ export default function HomeFloatButton()
 {
     return (
         <div className={homeFloatButtonStyles.container}>
-            <Link to="/" className={homeFloatButtonStyles.button}> Go Home </Link>
+            <Link to="/dashboard" className={homeFloatButtonStyles.button}> Go Home </Link>
         </div>
     )
 }

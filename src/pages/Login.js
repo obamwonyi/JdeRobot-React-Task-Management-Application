@@ -58,7 +58,7 @@ export default function Login() {
         setShowPassword(!showPassword);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!validateEmail(email)) {
@@ -74,8 +74,17 @@ export default function Login() {
         setLocalError('');
         setEmailError('');
 
-        // Dispatch login action
-        dispatch(loginUser({ email, password }));
+        try {
+            // Dispatch login action and wait for result
+            await dispatch(loginUser({ email, password }));
+
+            // Once logged in, fetch user profile if not already available
+            if (isAuthenticated) {
+                dispatch(fetchUserProfile());
+            }
+        } catch (error) {
+            console.error("Login process failed:", error);
+        }
     };
 
     useEffect(() => {
@@ -86,7 +95,6 @@ export default function Login() {
 
     return (
         <div className={loginStyles.container}>
-            <HomeFloatButton />
 
             <h1 className={loginStyles.h1}>Login</h1>
 
@@ -149,8 +157,8 @@ export default function Login() {
                     <Link to="/signup" className={signUpStyles.button}>Go To SignUp</Link>
                 </div>
 
-                <div className={loginStyles.forgotPassword}>
-                    <Link to="/forgot-password">Forgot Password?</Link>
+                <div className={loginStyles.forgotPasswordDiv}>
+                    <Link className={loginStyles.forgotPassword} to="/forgot-password">Forgot Password?</Link>
                 </div>
             </form>
         </div>

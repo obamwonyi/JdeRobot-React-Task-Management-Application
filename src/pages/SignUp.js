@@ -134,14 +134,12 @@ export default function SignUp() {
                 }
             })
             .catch((error) => {
-                console.error('Signup error:', error);
                 setSubmitError('An unexpected error occurred. Please try again.');
             });
     };
 
     return (
         <div className={signUpStyles.container}>
-            <HomeFloatButton />
             <h1 className={signUpStyles.h1}>Sign Up</h1>
 
             <form onSubmit={handleSubmit} className={signUpStyles.formInputDiv}>
