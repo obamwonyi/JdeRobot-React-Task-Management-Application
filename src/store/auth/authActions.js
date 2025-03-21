@@ -72,7 +72,7 @@ export const signupUser = (userData) => async (dispatch) => {
 
         const successAction = {
             type: SIGNUP_SUCCESS,
-            payload: response.data
+            payload: response.data,
         };
 
         dispatch(successAction);
@@ -80,7 +80,9 @@ export const signupUser = (userData) => async (dispatch) => {
     } catch (error) {
         console.log('API Error:', error.response?.data || error.message);
 
+        // Extract the error message from the backend response
         const errorMessage =
+            error.response?.data?.email?.[0] || // Check for email-specific error
             error.response?.data?.error ||
             error.response?.data?.detail ||
             'Signup failed';
@@ -88,7 +90,7 @@ export const signupUser = (userData) => async (dispatch) => {
         const failureAction = {
             type: SIGNUP_FAILURE,
             payload: errorMessage,
-            error: true
+            error: true,
         };
 
         dispatch(failureAction);

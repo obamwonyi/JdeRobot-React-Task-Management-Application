@@ -11,7 +11,7 @@ import { SIGNUP_SUCCESS } from '../store/auth/authTypes';
 export default function SignUp() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { loading, error } = useSelector(state => state.auth);
+    const { loading } = useSelector(state => state.auth);
 
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -22,7 +22,7 @@ export default function SignUp() {
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [usernameError, setUsernameError] = useState('');
-    const [submitError, setSubmitError] = useState(''); // Add this line
+    const [submitError, setSubmitError] = useState('');
 
     const validateEmail = (email) => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -114,7 +114,6 @@ export default function SignUp() {
 
         dispatch(signupUser(userData))
             .then((action) => {
-                // Check if the action type indicates success
                 if (!action.error && action.type === SIGNUP_SUCCESS) {
                     // On successful signup, redirect to login
                     navigate('/login');
@@ -123,11 +122,11 @@ export default function SignUp() {
                     const errorMsg = action.payload;
                     if (typeof errorMsg === 'string') {
                         if (errorMsg.includes('email already exists')) {
-                            setEmailError(errorMsg);
+                            setEmailError(errorMsg); // Set the error message for the email field
                         } else if (errorMsg.includes('username already exists')) {
-                            setUsernameError(errorMsg);
+                            setUsernameError(errorMsg); // Set the error message for the username field
                         } else {
-                            setSubmitError(errorMsg);
+                            setSubmitError(errorMsg); // Set a generic error message
                         }
                     } else {
                         setSubmitError('Signup failed. Please try again.');
@@ -230,7 +229,6 @@ export default function SignUp() {
                 </div>
 
                 {submitError && <div className={signUpStyles.error}>{submitError}</div>} {/* Display submitError */}
-                {error && <div className={signUpStyles.error}>{error}</div>}
 
                 <div className={signUpStyles.buttonDiv}>
                     <button
