@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux"; // Add useDispatch
 import { toast } from "react-toastify";
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
@@ -9,10 +9,10 @@ import { ReactComponent as Click } from "../../assets/icons/click.svg";
 import { ReactComponent as Save } from "../../assets/icons/save.svg";
 import SortableTaskItem from "../SortableTaskItem/SortableTaskItem";
 import axios from 'axios';
+import { fetchTasks } from "../../store/tasks/taskActions";
 
 // The base url
 const API_BASE_URL = 'http://localhost:8000/api';
-
 
 export default function TaskList({ onSaveOrder }) {
     const [taskItems, setTaskItems] = useState([]);
@@ -23,6 +23,14 @@ export default function TaskList({ onSaveOrder }) {
     const tasks = Array.isArray(tasksState.tasks) ? tasksState.tasks : [];
     const tasksLoading = tasksState.loading || false;
     const tasksError = tasksState.error || null;
+
+    // Add useDispatch
+    const dispatch = useDispatch();
+
+    // Fetch tasks on component mount
+    useEffect(() => {
+        dispatch(fetchTasks()); // Dispatch the fetchTasks action
+    }, [dispatch]);
 
     // Update taskItems when tasks change
     useEffect(() => {
