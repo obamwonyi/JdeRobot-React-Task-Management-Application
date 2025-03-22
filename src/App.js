@@ -15,6 +15,7 @@ import Signup from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from './components/ProtectedRoute';
 import NotFound from "./components/NotFound/NotFound";
+import TaskView from "./components/TaskView/TaskView";
 
 const InitializeAuth = () => {
     const dispatch = useDispatch();
@@ -58,6 +59,7 @@ function App() {
                             <Route path="/dashboard" element={<Dashboard />} />
                             <Route path="/create_task" element={<CreateTask />} />
                             <Route path="/about" element={<About />} />
+                            <Route path="/tasks/:id" element={<TaskView />} />
                         </Route>
 
                         <Route path="*" element={<NotFound />} />

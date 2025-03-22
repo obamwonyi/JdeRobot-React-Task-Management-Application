@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import taskItemStyles from "./TaskItem.module.css";
 import { ReactComponent as Completed} from "../../assets/icons/completed.svg";
 import { ReactComponent as Groceries } from "../../assets/icons/groceries.svg";
@@ -9,14 +10,16 @@ import { ReactComponent as Personal } from "../../assets/icons/personal.svg";
 import { ReactComponent as Work } from "../../assets/icons/work.svg";
 
 export default function TaskItem(props) {
-    // Now directly accessing properties from props instead of props.task
+    const navigate = useNavigate();
+
     const {
+        id,
         title,
         description,
         priority,
         category,
         dueDate,
-        due_date, // Handle both formats
+        due_date,
         completed
     } = props;
 
@@ -91,8 +94,16 @@ export default function TaskItem(props) {
 
     const formattedDate = dueDateValue ? new Date(dueDateValue).toLocaleDateString() : "No due date";
 
+    // Handler to navigate to task detail view
+    const handleTaskClick = () => {
+        navigate(`/tasks/${id}`);
+    };
+
     return (
-        <div className={taskItemStyles.container}>
+        <div
+            className={`${taskItemStyles.container} ${taskItemStyles.clickable}`}
+            onClick={handleTaskClick}
+        >
             <div className={taskItemStyles.leftDiv}>
                 <h3 className={taskItemStyles.title}>{title || "Task Item"}</h3>
                 <p className={taskItemStyles.paragraph}>

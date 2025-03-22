@@ -1,0 +1,144 @@
+.container {
+    display: flex;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+
+.innerContainer
+{
+    width: 100%;
+    display: flex;
+}
+
+.leftDiv {
+    display: flex;
+    width: 60%;
+    height: 100%;
+    flex-direction: column;
+}
+
+.rightDiv {
+    display: flex;
+    width: 40%;
+    height: 100%;
+    flex-direction: column;
+}
+
+.inputDiv {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.label {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+    display: flex;
+    align-items: center;
+}
+
+.title {
+    width: 20em;
+    height: 3em;
+    background: transparent;
+    color: white;
+    outline: none;
+    border: 1px solid var(--primary-text-color-hover);
+    border-radius: 5px;
+    transition: var(--1sec-transition);
+    padding: 5px 10px;
+}
+
+.title:focus {
+    border-color: var(--primary-text-color);
+    transition: var(--1sec-transition);
+}
+
+.task {
+    width: 40em;
+    height: 10em;
+    background: transparent;
+    color: white;
+    outline: none;
+    border: 1px solid var(--primary-text-color-hover);
+    border-radius: 5px;
+    transition: var(--1sec-transition);
+    padding: 10px;
+}
+
+.task:focus {
+    border-color: var(--primary-text-color);
+    transition: var(--1sec-transition);
+}
+
+.categoryAndPriorityDiv {
+    display: flex;
+    width: 33.5em;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.buttonDiv {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.addTaskButton {
+    background: transparent;
+    width: 10em;
+    font-weight: bold;
+    height: 3em;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid var(--primary-text-color-hover);
+    transition: var(--1sec-transition);
+    margin-right: 1em;
+}
+
+.addTaskButton:hover {
+    border: 1px solid var(--primary-text-color);
+    background-color: var(--primary-text-color);
+    transition: var(--1sec-transition);
+}
+
+.deleteButton {
+    background: transparent;
+    width: 10em;
+    font-weight: bold;
+    height: 3em;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ff4d4d;
+    transition: var(--1sec-transition);
+}
+
+.deleteButton:hover {
+    border: 1px solid #ff1a1a;
+    background-color: #ff1a1a;
+    transition: var(--1sec-transition);
+}
+
+.asterisk {
+    height: 16px;
+    width: 16px;
+    margin-left: 5px;
+}
+
+.loading {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
+}

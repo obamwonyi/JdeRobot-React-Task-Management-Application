@@ -88,3 +88,17 @@
     color: white;
     margin: 0;
 }
+
+.clickable {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.clickable:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.clickable:active {
+    transform: translateY(-1px);
+}
