@@ -34,17 +34,36 @@ export const fetchTasks = () => async (dispatch, getState) => {
             }
         });
 
+        // Log the API response structure
+        console.log('API response for tasks:', response.data);
+
+        // Ensure the payload is an array
+        const tasksArray = Array.isArray(response.data) ? response.data :
+            (response.data.results ? response.data.results : []);
+
         dispatch({
             type: FETCH_TASKS_SUCCESS,
-            payload: response.data
+            payload: tasksArray
         });
+
+        return tasksArray;
     } catch (error) {
+        console.error('Error fetching tasks:', error);
+
+        const errorMessage = error.response?.data?.error ||
+            error.response?.data?.detail ||
+            error.message ||
+            'Failed to fetch tasks';
+
         dispatch({
             type: FETCH_TASKS_FAILURE,
-            payload: error.response?.data?.error || error.response?.data?.detail || error.message
+            payload: errorMessage
         });
+
+        throw error;
     }
 };
+
 
 // Add a new task
 export const addTask = (taskData) => async (dispatch, getState) => {
@@ -71,7 +90,6 @@ export const addTask = (taskData) => async (dispatch, getState) => {
             payload: response.data
         });
 
-        // Return the created task data
         return response.data;
     } catch (error) {
         console.error('Error response:', error.response?.data);

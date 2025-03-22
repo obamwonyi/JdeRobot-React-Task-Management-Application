@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import dashboard from "../styles/pages/Dashboard.module.css";
 import DashboardHeader from '../components/DashboardHeader/DashboardHeader';
 import SearchBar from '../components/SearchBar/SearchBar';
@@ -7,11 +7,25 @@ import TaskTable from '../components/TaskTable/TaskTable';
 import Logout from "../components/Logout/Logout";
 import useAuth from '../hooks/useAuth';
 import { fetchUserProfile } from '../store/auth/authActions';
-import {toast} from "react-toastify";
+import { fetchTasks } from '../store/tasks/taskActions';
+import { toast } from "react-toastify";
 
 export default function Dashboard() {
     const dispatch = useDispatch();
     const { user, loading, isAuthenticated } = useAuth();
+
+    // Get the entire tasks state for debugging
+    const tasksState = useSelector(state => state.tasks);
+    console.log('Tasks state:', tasksState);
+
+    // Safely extract tasks with fallback
+    const tasks = Array.isArray(tasksState?.tasks) ? tasksState.tasks : [];
+    const tasksLoading = tasksState?.loading || false;
+    const tasksError = tasksState?.error || null;
+
+    console.log('Extracted tasks array:', tasks);
+    console.log('Tasks array type:', typeof tasks);
+    console.log('Is tasks an array?', Array.isArray(tasks));
 
     useEffect(() => {
         if (isAuthenticated && !user && !loading) {
@@ -22,13 +36,29 @@ export default function Dashboard() {
         }
     }, [isAuthenticated, user, loading, dispatch]);
 
+    // Fetch tasks when the component mounts and when authentication status changes
+    useEffect(() => {
+        if (isAuthenticated) {
+            console.log('Dashboard: Fetching tasks');
+            dispatch(fetchTasks())
+                .then(response => {
+                    console.log('Tasks fetched successfully:', response);
+                })
+                .catch(err => {
+                    console.error('Error fetching tasks:', err);
+                    toast.error('Failed to load tasks');
+                });
+        }
+    }, [isAuthenticated, dispatch]);
+
+    // Show error toast if there's an error fetching tasks
+    useEffect(() => {
+        if (tasksError) {
+            toast.error(`Error loading tasks: ${tasksError}`);
+        }
+    }, [tasksError]);
+
     const userName = user?.username || 'User';
-
-    // toast.success(`Welcome ${userName}`);
-
-
-    const tasks = [
-    ];
 
     return (
         <div className={dashboard.container}>
@@ -38,8 +68,14 @@ export default function Dashboard() {
             {/* SearchBar component */}
             <SearchBar />
 
-            {/* TaskTable component */}
-            <TaskTable tasks={tasks} />
+            {/* TaskTable component with loading state and safe tasks handling */}
+            {tasksLoading ? (
+                <div className={dashboard.loadingContainer}>
+                    <p>Loading tasks...</p>
+                </div>
+            ) : (
+                <TaskTable tasks={tasks} />
+            )}
 
             <Logout />
         </div>

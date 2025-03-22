@@ -8,10 +8,48 @@ import { ReactComponent as Medium } from "../../assets/icons/medium.svg";
 import { ReactComponent as Personal } from "../../assets/icons/personal.svg";
 import { ReactComponent as Work } from "../../assets/icons/work.svg";
 
-export default function TaskItem({task}) {
+export default function TaskItem(props) {
+    // Now directly accessing properties from props instead of props.task
+    const {
+        title,
+        description,
+        priority,
+        category,
+        dueDate,
+        due_date, // Handle both formats
+        completed
+    } = props;
+
+    // Use either dueDate or due_date
+    const dueDateValue = dueDate || due_date || null;
+
+    // Determine status based on the completed property
+    const status = completed ? 'completed' : 'incomplete';
+
+    // Helper function to handle objects or strings
+    const getStringValue = (value) => {
+        if (typeof value === 'string') {
+            return value.toLowerCase();
+        } else if (value && typeof value === 'object' && value.name) {
+            return value.name.toLowerCase();
+        }
+        return '';
+    };
+
+    // Helper function to display text values
+    const getDisplayText = (value) => {
+        if (typeof value === 'string') {
+            return value;
+        } else if (value && typeof value === 'object' && value.name) {
+            return value.name;
+        }
+        return '';
+    };
 
     const getCategoryIcon = (category) => {
-        switch(category?.toLowerCase()) {
+        const categoryValue = getStringValue(category);
+
+        switch(categoryValue) {
             case 'groceries':
                 return <Groceries className={taskItemStyles.iconStyle}/>;
             case 'work':
@@ -24,7 +62,9 @@ export default function TaskItem({task}) {
     };
 
     const getStatusIcon = (status) => {
-        switch(status?.toLowerCase()) {
+        const statusValue = getStringValue(status);
+
+        switch(statusValue) {
             case 'completed':
                 return <Completed className={taskItemStyles.iconStyle}/>;
             case 'incomplete':
@@ -35,7 +75,9 @@ export default function TaskItem({task}) {
     };
 
     const getPriorityIcon = (priority) => {
-        switch(priority?.toLowerCase()) {
+        const priorityValue = getStringValue(priority);
+
+        switch(priorityValue) {
             case 'high':
                 return <High className={taskItemStyles.iconStyle}/>;
             case 'medium':
@@ -47,48 +89,45 @@ export default function TaskItem({task}) {
         }
     };
 
-    const formattedDate = task?.dueDate ? new Date(task.dueDate).toLocaleDateString() : "3 Mon 2025";
+    const formattedDate = dueDateValue ? new Date(dueDateValue).toLocaleDateString() : "No due date";
 
     return (
         <div className={taskItemStyles.container}>
             <div className={taskItemStyles.leftDiv}>
-                <h3 className={taskItemStyles.title}>{task?.title || "Task Item"}</h3>
+                <h3 className={taskItemStyles.title}>{title || "Task Item"}</h3>
                 <p className={taskItemStyles.paragraph}>
-                    {task?.description || "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."}
+                    {description || "No description provided."}
                 </p>
                 <p className={taskItemStyles.paragraph}>
-                    {formattedDate}
+                    Due: {formattedDate}
                 </p>
             </div>
-
 
             <div className={taskItemStyles.rightDiv}>
                 <div className={taskItemStyles.filtersDiv}>
                     <button className={taskItemStyles.filterButton}>Category</button>
                     <div className={taskItemStyles.iconDiv}>
-                        {getCategoryIcon(task?.category)}
-                        <p className={taskItemStyles.iconText}>{task?.category || "personal"}</p>
+                        {getCategoryIcon(category)}
+                        <p className={taskItemStyles.iconText}>{getDisplayText(category) || "personal"}</p>
                     </div>
                 </div>
-
 
                 <div className={taskItemStyles.filtersDiv}>
                     <button className={taskItemStyles.filterButton}>Status</button>
                     <div className={taskItemStyles.iconDiv}>
-                        {getStatusIcon(task?.status)}
-                        <p className={taskItemStyles.iconText}>{task?.status || "incomplete"}</p>
+                        {getStatusIcon(status)}
+                        <p className={taskItemStyles.iconText}>{getDisplayText(status)}</p>
                     </div>
                 </div>
-
 
                 <div className={taskItemStyles.filtersDiv}>
                     <button className={taskItemStyles.filterButton}>Priority</button>
                     <div className={taskItemStyles.iconDiv}>
-                        {getPriorityIcon(task?.priority)}
-                        <p className={taskItemStyles.iconText}>{task?.priority || "low"}</p>
+                        {getPriorityIcon(priority)}
+                        <p className={taskItemStyles.iconText}>{getDisplayText(priority) || "low"}</p>
                     </div>
                 </div>
             </div>
         </div>
-    )
+    );
 }

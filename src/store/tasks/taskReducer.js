@@ -22,6 +22,9 @@ const initialState = {
 };
 
 export default function taskReducer(state = initialState, action) {
+    console.log('Current state:', state);
+    console.log('Action:', action);
+
     switch (action.type) {
         case FETCH_TASKS_REQUEST:
         case ADD_TASK_REQUEST:
@@ -36,30 +39,30 @@ export default function taskReducer(state = initialState, action) {
             return {
                 ...state,
                 loading: false,
-                tasks: action.payload,
+                tasks: Array.isArray(action.payload) ? action.payload : [],
                 error: null
             };
         case ADD_TASK_SUCCESS:
             return {
                 ...state,
                 loading: false,
-                tasks: [...state.tasks, action.payload],
+                tasks: Array.isArray(state.tasks) ? [...state.tasks, action.payload] : [action.payload],
                 error: null
             };
         case UPDATE_TASK_SUCCESS:
             return {
                 ...state,
                 loading: false,
-                tasks: state.tasks.map(task =>
+                tasks: Array.isArray(state.tasks) ? state.tasks.map(task =>
                     task.id === action.payload.id ? action.payload : task
-                ),
+                ) : [],
                 error: null
             };
         case DELETE_TASK_SUCCESS:
             return {
                 ...state,
                 loading: false,
-                tasks: state.tasks.filter(task => task.id !== action.payload),
+                tasks: Array.isArray(state.tasks) ? state.tasks.filter(task => task.id !== action.payload) : [],
                 error: null
             };
         case FETCH_TASKS_FAILURE:
@@ -79,4 +82,4 @@ export default function taskReducer(state = initialState, action) {
         default:
             return state;
     }
-};
+}

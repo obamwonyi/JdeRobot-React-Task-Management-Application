@@ -4,6 +4,9 @@ import taskTableStyles from './TaskTable.module.css';
 import { Link } from "react-router-dom";
 
 export default function TaskTable({ tasks }) {
+
+    console.log(tasks);
+
     return (
         <div className={taskTableStyles.container}>
             {tasks.length > 0 ? (
