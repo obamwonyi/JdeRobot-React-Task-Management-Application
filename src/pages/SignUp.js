@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import signUpStyles from "../styles/pages/SignUp.module.css";
-import HomeFloatButton from "../components/HomeFloatButton/HomeFloatButton";
+import { toast } from "react-toastify";
 import EyeIcon from '../assets/icons/eye.svg';
 import EyeSlashIcon from '../assets/icons/eyeSlash.svg';
 import { signupUser } from '../store/auth/authActions';
@@ -115,7 +115,7 @@ export default function SignUp() {
         dispatch(signupUser(userData))
             .then((action) => {
                 if (!action.error && action.type === SIGNUP_SUCCESS) {
-                    // On successful signup, redirect to login
+                    toast.success("Account created successfully!");
                     navigate('/login');
                 } else if (action.payload) {
                     // Handle specific errors based on error message content

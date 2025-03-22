@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import loginStyles from "../styles/pages/Login.module.css";
 import signUpStyles from "../styles/pages/SignUp.module.css";
-import HomeFloatButton from "../components/HomeFloatButton/HomeFloatButton";
 import EyeIcon from '../assets/icons/eye.svg';
 import EyeSlashIcon from '../assets/icons/eyeSlash.svg';
 import { loginUser, fetchUserProfile, clearAuthErrors } from '../store/auth/authActions';
+
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -78,7 +78,7 @@ export default function Login() {
             // Dispatch login action and wait for result
             await dispatch(loginUser({ email, password }));
 
-            // Once logged in, fetch user profile if not already available
+
             if (isAuthenticated) {
                 dispatch(fetchUserProfile());
             }

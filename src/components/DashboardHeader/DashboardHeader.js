@@ -1,8 +1,11 @@
 import dashboardHeaderStyles from "./DashboardHeader.module.css";
 import { Link } from "react-router-dom";
-import { ReactComponent as User } from "../../assets/icons/user.svg";
+import User from "../User/User";
+
 
 export default function DashboardHeader( { userName } ) {
+
+
     return (
         <div className={dashboardHeaderStyles.container}>
             <h2 className={`goldman-regular ${dashboardHeaderStyles.header}`}>Task Management Application</h2>
@@ -17,10 +20,8 @@ export default function DashboardHeader( { userName } ) {
 
             </div>
 
-            <div className={dashboardHeaderStyles.usernameDiv}>
-                <User className={dashboardHeaderStyles.userIcon} />
-                <h3 className={dashboardHeaderStyles.username}>{ userName }</h3>
-            </div>
+            <User userName={userName} />
+
         </div>
     )
 }

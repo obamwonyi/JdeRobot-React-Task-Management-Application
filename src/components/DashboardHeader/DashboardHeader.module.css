@@ -38,23 +38,3 @@
 }
 
 
-.usernameDiv
-{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.username
-{
-    font-size: 16px;
-    font-weight: bold;
-    color: var(--primary-text-color);
-}
-
-.userIcon
-{
-    height: 20px;
-    width: 20px;
-    margin-right: 0.5em;
-}

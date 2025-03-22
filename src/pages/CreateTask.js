@@ -6,6 +6,10 @@ import HomeFloatButton from "../components/HomeFloatButton/HomeFloatButton";
 import AddTask from '../components/AddTask/AddTask';
 import TaskList from '../components/TaskList/TaskList';
 import FAQ from '../components/FAQ/FAQ';
+import Logout from '../components/Logout/Logout';
+import User from '../components/User/User';
+import UseAuth from "../hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 
 export default function CreateTask() {
     const [activeComponent, setActiveComponent] = useState('AddTask');
@@ -13,6 +17,10 @@ export default function CreateTask() {
     const handleNavigate = (component) => {
         setActiveComponent(component);
     };
+
+    const { user, loading, isAuthenticated } = useAuth();
+
+    const userName = user?.username || 'User';
 
 
 
@@ -45,6 +53,8 @@ export default function CreateTask() {
 
             <HomeFloatButton />
 
+            <User userName={ userName } />
+
             <CreateTaskHeader
                 onNavigate={handleNavigate}
                 activeComponent={activeComponent}
@@ -56,6 +66,10 @@ export default function CreateTask() {
                 {activeComponent === 'TaskList' && <TaskList tasks={tasks} />}
                 {activeComponent === 'FAQ' && <FAQ />}
             </div>
+
+
+            <Logout />
+
         </div>
     );
 }

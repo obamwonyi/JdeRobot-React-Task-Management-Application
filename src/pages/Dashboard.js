@@ -7,13 +7,13 @@ import TaskTable from '../components/TaskTable/TaskTable';
 import Logout from "../components/Logout/Logout";
 import useAuth from '../hooks/useAuth';
 import { fetchUserProfile } from '../store/auth/authActions';
+import {toast} from "react-toastify";
 
 export default function Dashboard() {
     const dispatch = useDispatch();
     const { user, loading, isAuthenticated } = useAuth();
 
     useEffect(() => {
-        // If authenticated but no user data, try to fetch it
         if (isAuthenticated && !user && !loading) {
             console.log('Dashboard: Attempting to fetch user profile');
             dispatch(fetchUserProfile()).catch(err => {
@@ -23,6 +23,9 @@ export default function Dashboard() {
     }, [isAuthenticated, user, loading, dispatch]);
 
     const userName = user?.username || 'User';
+
+    // toast.success(`Welcome ${userName}`);
+
 
     const tasks = [
         { id: 1, title: 'Task 1', description: 'Description for Task 1' },

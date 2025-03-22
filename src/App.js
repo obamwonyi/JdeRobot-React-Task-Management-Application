@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from 'react-redux';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { ToastContainer } from 'react-toastify'; // Import ToastContainer
+import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for toast notifications
 import store from './store';
 import { fetchUserProfile } from './store/auth/authActions';
 import Home from "./pages/Home";
@@ -12,7 +14,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from './components/ProtectedRoute';
-
+import NotFound from "./components/NotFound/NotFound";
 
 const InitializeAuth = () => {
     const dispatch = useDispatch();
@@ -33,6 +35,18 @@ function App() {
             <div className="App">
                 <BrowserRouter>
                     <InitializeAuth />
+                    {/* Add ToastContainer here */}
+                    <ToastContainer
+                        position="top-right"
+                        autoClose={3000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                    />
                     <Routes>
                         {/* Public routes */}
                         <Route path="/" element={<Home />} />
@@ -45,6 +59,8 @@ function App() {
                             <Route path="/create_task" element={<CreateTask />} />
                             <Route path="/about" element={<About />} />
                         </Route>
+
+                        <Route path="*" element={<NotFound />} />
                     </Routes>
                 </BrowserRouter>
             </div>
