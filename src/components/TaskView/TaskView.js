@@ -21,6 +21,7 @@ export default function TaskView() {
         dueDate: "",
         completed: false,
     });
+    const [initialTask, setInitialTask] = useState(null); // Store initial task state
     const [loading, setLoading] = useState(true);
     const [categories, setCategories] = useState([]);
     const [categoriesLoading, setCategoriesLoading] = useState(true);
@@ -43,10 +44,12 @@ export default function TaskView() {
                         Authorization: `Bearer ${token}`,
                     },
                 });
-                setTask({
+                const taskData = {
                     ...taskResponse.data,
                     dueDate: taskResponse.data.dueDate || "",
-                });
+                };
+                setTask(taskData);
+                setInitialTask(taskData); // Store initial task state
 
                 // Fetch categories
                 const categoriesResponse = await axios.get(`${API_BASE_URL}/categories/`, {
@@ -107,7 +110,7 @@ export default function TaskView() {
     const handleDateSelect = (date) => {
         setTask({
             ...task,
-            dueDate: date,
+            dueDate: date, // Directly use the date string (or null)
         });
     };
 
@@ -115,8 +118,21 @@ export default function TaskView() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // Compare current task state with initial task state
+        if (JSON.stringify(task) === JSON.stringify(initialTask)) {
+            toast.info("No changes detected. The task was not updated.");
+            return;
+        }
+
         try {
-            const response = await axios.put(`${API_BASE_URL}/tasks/${id}/`, task, {
+            const taskData = {
+                ...task,
+                due_date: task.dueDate, // Use the correct field name and format
+            };
+
+            console.log("Task data being sent:", taskData);
+
+            const response = await axios.put(`${API_BASE_URL}/tasks/${id}/`, taskData, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
@@ -124,7 +140,7 @@ export default function TaskView() {
             });
 
             toast.success("Task updated successfully!");
-            navigate("/tasks");
+            navigate("/dashboard");
         } catch (error) {
             console.error("Error updating task:", error);
             toast.error("Failed to update task.");
@@ -141,7 +157,7 @@ export default function TaskView() {
                     },
                 });
                 toast.success("Task deleted successfully!");
-                navigate("/tasks");
+                navigate("/dashboard");
             } catch (error) {
                 console.error("Error deleting task:", error);
                 toast.error("Failed to delete task.");
@@ -234,7 +250,6 @@ export default function TaskView() {
                     </div>
                 </div>
             </div>
-
         </div>
     );
 }
