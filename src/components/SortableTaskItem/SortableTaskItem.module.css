@@ -1,19 +1,22 @@
 .sortableTaskItem {
-    cursor: grab;
-    margin-bottom: 10px;
     position: relative;
-    transition: transform 0.2s ease;
+    margin-bottom: 15px;
+    cursor: grab;
 }
 
 .sortableTaskItem:active {
     cursor: grabbing;
 }
 
-.sortableTaskItem:hover::before {
-    content: '⋮⋮';
-    position: absolute;
-    top: 10px;
-    left: -20px;
-    font-size: 16px;
-    color: #aaa;
+.dragHandle {
+    cursor: grab;
+    display: inline-block;
+    padding: 0 8px;
+    font-size: 18px;
+    color: #777;
+    user-select: none;
+}
+
+.dragHandle:active {
+    cursor: grabbing;
 }

@@ -1,16 +1,30 @@
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import taskListStyles from "./TaskList.module.css";
 import { ReactComponent as Drag } from "../../assets/icons/drag.svg";
 import { ReactComponent as Click } from "../../assets/icons/click.svg";
 import { ReactComponent as Save } from "../../assets/icons/save.svg";
-import { useState, useEffect } from "react";
-import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
-import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import SortableTaskItem from "../SortableTaskItem/SortableTaskItem";
+import axios from 'axios';
 
-export default function TaskList({ tasks = [], onSaveOrder }) {
+// The base url
+const API_BASE_URL = 'http://localhost:8000/api';
+
+
+export default function TaskList({ onSaveOrder }) {
     const [taskItems, setTaskItems] = useState([]);
     const [hasChanged, setHasChanged] = useState(false);
 
+    // Access tasks from the Redux store
+    const tasksState = useSelector((state) => state.tasks);
+    const tasks = Array.isArray(tasksState.tasks) ? tasksState.tasks : [];
+    const tasksLoading = tasksState.loading || false;
+    const tasksError = tasksState.error || null;
+
+    // Update taskItems when tasks change
     useEffect(() => {
         setTaskItems([...tasks]);
     }, [tasks]);
@@ -22,6 +36,7 @@ export default function TaskList({ tasks = [], onSaveOrder }) {
         })
     );
 
+    // Handle drag-and-drop events
     const handleDragEnd = (event) => {
         const { active, over } = event;
 
@@ -37,13 +52,38 @@ export default function TaskList({ tasks = [], onSaveOrder }) {
         }
     };
 
-    // Function to handle saving the new order
-    const handleSaveOrder = () => {
-        if (onSaveOrder && hasChanged) {
-            onSaveOrder(taskItems);
+    // Handle saving the new order
+    const handleSaveOrder = async () => {
+        if (!hasChanged) return;
+
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.put(`${API_BASE_URL}/tasks/bulk_update/`, taskItems, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            toast.success("Task order saved successfully!");
             setHasChanged(false);
+
+            // Notify the parent component (if needed)
+            if (onSaveOrder) {
+                onSaveOrder(taskItems);
+            }
+        } catch (err) {
+            console.error("Error saving task order:", err);
+            toast.error("Failed to save task order.");
         }
     };
+
+    if (tasksLoading) {
+        return <div className={taskListStyles.loading}>Loading tasks...</div>;
+    }
+
+    if (tasksError) {
+        return <div className={taskListStyles.error}>{tasksError}</div>;
+    }
 
     return (
         <div className={taskListStyles.container}>
