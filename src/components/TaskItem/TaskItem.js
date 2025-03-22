@@ -61,6 +61,7 @@ export default function TaskItem({task}) {
                 </p>
             </div>
 
+
             <div className={taskItemStyles.rightDiv}>
                 <div className={taskItemStyles.filtersDiv}>
                     <button className={taskItemStyles.filterButton}>Category</button>
@@ -70,6 +71,7 @@ export default function TaskItem({task}) {
                     </div>
                 </div>
 
+
                 <div className={taskItemStyles.filtersDiv}>
                     <button className={taskItemStyles.filterButton}>Status</button>
                     <div className={taskItemStyles.iconDiv}>
@@ -78,11 +80,12 @@ export default function TaskItem({task}) {
                     </div>
                 </div>
 
+
                 <div className={taskItemStyles.filtersDiv}>
                     <button className={taskItemStyles.filterButton}>Priority</button>
                     <div className={taskItemStyles.iconDiv}>
                         {getPriorityIcon(task?.priority)}
-                        <p className={taskItemStyles.iconText}>{task?.priority || "medium"}</p>
+                        <p className={taskItemStyles.iconText}>{task?.priority || "low"}</p>
                     </div>
                 </div>
             </div>
