@@ -3,9 +3,9 @@ import searchBarStyles from './SearchBar.module.css';
 
 export default function SearchBar({ onSearch, onFilter }) {
     const [searchTerm, setSearchTerm] = useState('');
-    const [categoryFilters, setCategoryFilters] = useState([]);
-    const [statusFilters, setStatusFilters] = useState([]);
-    const [priorityFilters, setPriorityFilters] = useState([]);
+    const [categoryFilter, setCategoryFilter] = useState('');
+    const [statusFilter, setStatusFilter] = useState('');
+    const [priorityFilter, setPriorityFilter] = useState('');
 
     // Handle search input change
     const handleSearchChange = (e) => {
@@ -16,38 +16,26 @@ export default function SearchBar({ onSearch, onFilter }) {
 
     // Handle category filter change
     const handleCategoryFilterChange = (category) => {
-        const updatedFilters = categoryFilters.includes(category)
-            ? categoryFilters.filter((cat) => cat !== category) // Remove if already selected
-            : [...categoryFilters, category]; // Add if not selected
-        setCategoryFilters(updatedFilters);
-        onFilter({ category: updatedFilters }); // Pass the updated filters to the parent component
+        // If selecting the already selected option, clear it; otherwise set the new selection
+        const newValue = category === categoryFilter ? '' : category;
+        setCategoryFilter(newValue);
+        onFilter({ category: newValue ? [newValue] : [] }); // Pass as array for compatibility
     };
 
     // Handle status filter change
     const handleStatusFilterChange = (status) => {
-        let updatedFilters;
-
-        if (status === 'All') {
-            // If "All" is selected, clear other status filters
-            updatedFilters = statusFilters.includes('All') ? [] : ['All'];
-        } else {
-            // If another status is selected, remove "All" if it exists
-            updatedFilters = statusFilters.includes(status)
-                ? statusFilters.filter((s) => s !== status) // Remove if already selected
-                : [...statusFilters.filter((s) => s !== 'All'), status]; // Add if not selected
-        }
-
-        setStatusFilters(updatedFilters);
-        onFilter({ status: updatedFilters }); // Pass the updated filters to the parent component
+        // If selecting the already selected option, clear it; otherwise set the new selection
+        const newValue = status === statusFilter ? '' : status;
+        setStatusFilter(newValue);
+        onFilter({ status: newValue ? [newValue] : [] }); // Pass as array for compatibility
     };
 
     // Handle priority filter change
     const handlePriorityFilterChange = (priority) => {
-        const updatedFilters = priorityFilters.includes(priority)
-            ? priorityFilters.filter((p) => p !== priority) // Remove if already selected
-            : [...priorityFilters, priority]; // Add if not selected
-        setPriorityFilters(updatedFilters);
-        onFilter({ priority: updatedFilters }); // Pass the updated filters to the parent component
+        // If selecting the already selected option, clear it; otherwise set the new selection
+        const newValue = priority === priorityFilter ? '' : priority;
+        setPriorityFilter(newValue);
+        onFilter({ priority: newValue ? [newValue] : [] }); // Pass as array for compatibility
     };
 
     return (
@@ -73,12 +61,24 @@ export default function SearchBar({ onSearch, onFilter }) {
                             <div key={category} className={searchBarStyles.checkboxButtonDiv}>
                                 <h6 className={searchBarStyles.checkboxButtonText}>{category}</h6>
                                 <input
-                                    type="checkbox"
-                                    checked={categoryFilters.includes(category)}
+                                    type="radio"
+                                    name="categoryFilter"
+                                    checked={categoryFilter === category}
                                     onChange={() => handleCategoryFilterChange(category)}
                                 />
                             </div>
                         ))}
+                        {categoryFilter && (
+                            <div className={searchBarStyles.checkboxButtonDiv}>
+                                <h6 className={searchBarStyles.checkboxButtonText}>Clear</h6>
+                                <button
+                                    className={searchBarStyles.clearButton}
+                                    onClick={() => handleCategoryFilterChange(categoryFilter)}
+                                >
+                                    ×
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -90,13 +90,24 @@ export default function SearchBar({ onSearch, onFilter }) {
                             <div key={status} className={searchBarStyles.checkboxButtonDiv}>
                                 <h6 className={searchBarStyles.checkboxButtonText}>{status}</h6>
                                 <input
-                                    type="checkbox"
-                                    checked={statusFilters.includes(status)}
+                                    type="radio"
+                                    name="statusFilter"
+                                    checked={statusFilter === status}
                                     onChange={() => handleStatusFilterChange(status)}
-                                    disabled={status !== 'All' && statusFilters.includes('All')} // Disable if "All" is selected
                                 />
                             </div>
                         ))}
+                        {statusFilter && (
+                            <div className={searchBarStyles.checkboxButtonDiv}>
+                                <h6 className={searchBarStyles.checkboxButtonText}>Clear</h6>
+                                <button
+                                    className={searchBarStyles.clearButton}
+                                    onClick={() => handleStatusFilterChange(statusFilter)}
+                                >
+                                    ×
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -108,12 +119,24 @@ export default function SearchBar({ onSearch, onFilter }) {
                             <div key={priority} className={searchBarStyles.checkboxButtonDiv}>
                                 <h6 className={searchBarStyles.checkboxButtonText}>{priority}</h6>
                                 <input
-                                    type="checkbox"
-                                    checked={priorityFilters.includes(priority)}
+                                    type="radio"
+                                    name="priorityFilter"
+                                    checked={priorityFilter === priority}
                                     onChange={() => handlePriorityFilterChange(priority)}
                                 />
                             </div>
                         ))}
+                        {priorityFilter && (
+                            <div className={searchBarStyles.checkboxButtonDiv}>
+                                <h6 className={searchBarStyles.checkboxButtonText}>Clear</h6>
+                                <button
+                                    className={searchBarStyles.clearButton}
+                                    onClick={() => handlePriorityFilterChange(priorityFilter)}
+                                >
+                                    ×
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

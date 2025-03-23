@@ -79,7 +79,7 @@
     margin-bottom: 1em;
 }
 
-input[type="checkbox"] {
+input[type="radio"] {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -94,13 +94,13 @@ input[type="checkbox"] {
     transition: var(--default-transition);
 }
 
-input[type="checkbox"]:checked {
+input[type="radio"]:checked {
     background-color: var(--primary-text-color);
     border-color: white;
     transition: var(--default-transition);
 }
 
-input[type="checkbox"]:checked::after {
+input[type="radio"]:checked::after {
     content: '✔';
     font-size: 12px;
     color: white;
@@ -109,5 +109,15 @@ input[type="checkbox"]:checked::after {
     left: 50%;
     transform: translate(-50%, -50%);
     font-weight: bold;
+    transition: var(--default-transition);
+}
+
+.clearButton
+{
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: var(--primary-text-color);
+    color: white;
     transition: var(--default-transition);
 }
