@@ -142,13 +142,12 @@ export default function TaskView() {
                 description: task.description,
                 priority: task.priority,
                 completed: task.completed,
-                category: task.category ? { name: task.category.label } : null, // Map category to the expected format
-                category_id: task.category ? task.category.value : null, // Include category_id
-                due_date: task.dueDate, // Use the correct field name and format
-                order: task.order, // Include the order field
+                category_id: task.category ? task.category.value : null, // Use category_id for updates
+                due_date: task.dueDate || null, // Ensure due_date is null if not set
+                order: task.order,
             };
 
-            // console.log("Task data being sent:", taskData); // Log the payload
+            console.log("Task data being sent (handleSubmit):", taskData); // Log the payload
 
             // Dispatch the updateTask action
             await dispatch(updateTask(id, taskData));
@@ -156,7 +155,6 @@ export default function TaskView() {
             toast.success("Task updated successfully!");
             navigate("/dashboard");
         } catch (error) {
-            // console.error("Error updating task:", error);
             toast.error("Failed to update task.");
         }
     };
