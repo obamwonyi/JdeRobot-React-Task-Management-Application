@@ -190,7 +190,7 @@ export default function TaskView() {
                 completed: updatedTask.completed,
                 category: updatedTask.category ? { name: updatedTask.category.label } : null, // Map category to the expected format
                 category_id: updatedTask.category ? updatedTask.category.value : null, // Include category_id
-                due_date: updatedTask.dueDate, // Use the correct field name and format
+                due_date: updatedTask.dueDate || null, // Ensure due_date is null if not set
                 order: updatedTask.order, // Include the order field
             };
 
