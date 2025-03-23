@@ -81,7 +81,7 @@ export default function TaskList({ onSaveOrder }) {
                 onSaveOrder(taskItems);
             }
         } catch (err) {
-            console.error("Error saving task order:", err);
+            // console.error("Error saving task order:", err);
             toast.error("Failed to save task order.");
         }
     };

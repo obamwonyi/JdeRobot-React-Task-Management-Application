@@ -78,7 +78,7 @@ export default function TaskView() {
                 setCategoriesLoading(false);
                 setLoading(false);
             } catch (error) {
-                console.error("Error fetching task or categories:", error);
+                // console.error("Error fetching task or categories:", error);
                 toast.error("Failed to load task details.");
                 navigate("/tasks");
             }
@@ -148,7 +148,7 @@ export default function TaskView() {
                 order: task.order, // Include the order field
             };
 
-            console.log("Task data being sent:", taskData); // Log the payload
+            // console.log("Task data being sent:", taskData); // Log the payload
 
             // Dispatch the updateTask action
             await dispatch(updateTask(id, taskData));
@@ -156,7 +156,7 @@ export default function TaskView() {
             toast.success("Task updated successfully!");
             navigate("/dashboard");
         } catch (error) {
-            console.error("Error updating task:", error);
+            // console.error("Error updating task:", error);
             toast.error("Failed to update task.");
         }
     };
@@ -171,7 +171,7 @@ export default function TaskView() {
                 toast.success("Task deleted successfully!");
                 navigate("/dashboard");
             } catch (error) {
-                console.error("Error deleting task:", error);
+                // console.error("Error deleting task:", error);
                 toast.error("Failed to delete task.");
             }
         }
@@ -194,7 +194,7 @@ export default function TaskView() {
                 order: updatedTask.order, // Include the order field
             };
 
-            console.log("Task data being sent:", taskData); // Log the payload
+            // console.log("Task data being sent:", taskData);
 
             // Dispatch the updateTask action
             await dispatch(updateTask(id, taskData));
@@ -204,7 +204,7 @@ export default function TaskView() {
             toast.success("Task marked as completed!");
             navigate("/dashboard");
         } catch (error) {
-            console.error("Error marking task as completed:", error);
+            // console.error("Error marking task as completed:", error);
             toast.error("Failed to mark task as completed.");
         }
     };

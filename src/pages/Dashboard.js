@@ -16,7 +16,7 @@ export default function Dashboard() {
 
     // Get the entire tasks state for debugging
     const tasksState = useSelector(state => state.tasks);
-    console.log('Tasks state:', tasksState);
+    // console.log('Tasks state:', tasksState);
 
     // Safely extract tasks with fallback
     const tasks = Array.isArray(tasksState?.tasks) ? tasksState.tasks : [];
@@ -76,9 +76,9 @@ export default function Dashboard() {
 
     useEffect(() => {
         if (isAuthenticated && !user && !loading) {
-            console.log('Dashboard: Attempting to fetch user profile');
+            // console.log('Dashboard: Attempting to fetch user profile');
             dispatch(fetchUserProfile()).catch(err => {
-                console.error('Error fetching user profile:', err);
+                // console.error('Error fetching user profile:', err);
             });
         }
     }, [isAuthenticated, user, loading, dispatch]);
@@ -86,13 +86,13 @@ export default function Dashboard() {
     // Fetch tasks when the component mounts and when authentication status changes
     useEffect(() => {
         if (isAuthenticated) {
-            console.log('Dashboard: Fetching tasks');
+            // console.log('Dashboard: Fetching tasks');
             dispatch(fetchTasks())
                 .then(response => {
-                    console.log('Tasks fetched successfully:', response);
+                    // console.log('Tasks fetched successfully:', response);
                 })
                 .catch(err => {
-                    console.error('Error fetching tasks:', err);
+                    // console.error('Error fetching tasks:', err);
                     toast.error('Failed to load tasks');
                 });
         }

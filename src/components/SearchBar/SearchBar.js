@@ -11,7 +11,7 @@ export default function SearchBar({ onSearch, onFilter }) {
     const handleSearchChange = (e) => {
         const value = e.target.value;
         setSearchTerm(value);
-        onSearch(value); // Pass the search term to the parent component
+        onSearch(value);
     };
 
     // Handle category filter change
@@ -19,7 +19,7 @@ export default function SearchBar({ onSearch, onFilter }) {
         // If selecting the already selected option, clear it; otherwise set the new selection
         const newValue = category === categoryFilter ? '' : category;
         setCategoryFilter(newValue);
-        onFilter({ category: newValue ? [newValue] : [] }); // Pass as array for compatibility
+        onFilter({ category: newValue ? [newValue] : [] });
     };
 
     // Handle status filter change
@@ -27,7 +27,7 @@ export default function SearchBar({ onSearch, onFilter }) {
         // If selecting the already selected option, clear it; otherwise set the new selection
         const newValue = status === statusFilter ? '' : status;
         setStatusFilter(newValue);
-        onFilter({ status: newValue ? [newValue] : [] }); // Pass as array for compatibility
+        onFilter({ status: newValue ? [newValue] : [] });
     };
 
     // Handle priority filter change
@@ -35,7 +35,7 @@ export default function SearchBar({ onSearch, onFilter }) {
         // If selecting the already selected option, clear it; otherwise set the new selection
         const newValue = priority === priorityFilter ? '' : priority;
         setPriorityFilter(newValue);
-        onFilter({ priority: newValue ? [newValue] : [] }); // Pass as array for compatibility
+        onFilter({ priority: newValue ? [newValue] : [] });
     };
 
     return (

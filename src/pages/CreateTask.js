@@ -30,24 +30,7 @@ export default function CreateTask() {
         { id: 3, title: 'Task 3', description: 'Description for Task 3' },
         { id: 4, title: 'Task 4', description: 'Description for Task 4' },
     ]);
-
-    const handleSaveOrder = (newOrderedTasks) => {
-        // Update local state
-        setTasks(newOrderedTasks);
-        // Todo:
-        //------------------------------------
-        // Send the new order to the backend
-        // Sample I can use :
-        // fetch('/api/tasks/reorder', {
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify({ tasks: newOrderedTasks }),
-        // });
-    };
-
-
+    
     return (
         <div className={creatTaskStyle.container}>
 

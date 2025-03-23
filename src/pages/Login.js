@@ -83,7 +83,7 @@ export default function Login() {
                 dispatch(fetchUserProfile());
             }
         } catch (error) {
-            console.error("Login process failed:", error);
+            // console.error("Login process failed:", error);
         }
     };
 

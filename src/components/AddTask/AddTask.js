@@ -41,7 +41,7 @@ export default function AddTask() {
                     }
                 });
 
-                console.log(response.data.results);
+                // console.log(response.data.results);
 
                 // Map API response to dropdown format
                 const formattedCategories = response.data.results.map(cat => ({
@@ -64,7 +64,7 @@ export default function AddTask() {
                     setSelectedCategory(response.data.results[0].id);
                 }
             } catch (err) {
-                console.error("Failed to fetch categories", err);
+                // console.error("Failed to fetch categories", err);
                 toast.error("Failed to load categories");
                 // Fallback to empty array
                 setCategories([]);
@@ -127,7 +127,7 @@ export default function AddTask() {
 
         try {
             // Log the data being sent for debugging
-            console.log("Sending task data:", taskData);
+            // console.log("Sending task data:", taskData);
 
             // Dispatch the addTask action and wait for it to complete
             const result = await dispatch(addTask(taskData));
@@ -144,7 +144,7 @@ export default function AddTask() {
             }
         } catch (err) {
             // Log the error details for debugging
-            console.error("Error creating task:", err);
+            // console.error("Error creating task:", err);
 
             // If there's an error, show an error toast
             toast.error(error || "Failed to create task.");
