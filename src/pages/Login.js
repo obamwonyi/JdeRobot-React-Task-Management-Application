@@ -157,9 +157,9 @@ export default function Login() {
                     <Link to="/signup" className={signUpStyles.button}>Go To SignUp</Link>
                 </div>
 
-                <div className={loginStyles.forgotPasswordDiv}>
-                    <Link className={loginStyles.forgotPassword} to="/forgot-password">Forgot Password?</Link>
-                </div>
+                {/*<div className={loginStyles.forgotPasswordDiv}>*/}
+                {/*    <Link className={loginStyles.forgotPassword} to="/forgot-password">Forgot Password?</Link>*/}
+                {/*</div>*/}
             </form>
         </div>
     );

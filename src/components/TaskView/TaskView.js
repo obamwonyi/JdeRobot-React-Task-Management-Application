@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import taskViewStyling from "./TaskView.module.css";
 import DropDownButton from "../DropDownButton/DropDownButton";
 import DatePicker from "../DatePicker/DatePicker";
 import { ReactComponent as Asterisk } from "../../assets/icons/asterisk.svg";
+import {
+    fetchTasks,
+    updateTask,
+    deleteTask,
+} from "../../store/tasks/taskActions";
+import axios from "axios";
 
 const API_BASE_URL = 'http://localhost:8000/api';
 
@@ -17,9 +22,10 @@ export default function TaskView() {
         title: "",
         description: "",
         priority: "low",
-        category: "",
+        category: null, // Store the selected category object
         dueDate: "",
         completed: false,
+        order: 0, // Include the order field
     });
     const [initialTask, setInitialTask] = useState(null); // Store initial task state
     const [loading, setLoading] = useState(true);
@@ -27,6 +33,7 @@ export default function TaskView() {
     const [categoriesLoading, setCategoriesLoading] = useState(true);
 
     const { token } = useSelector((state) => state.auth);
+    const dispatch = useDispatch(); // Add useDispatch
 
     const priorities = [
         { value: "low", label: "Low" },
@@ -46,7 +53,11 @@ export default function TaskView() {
                 });
                 const taskData = {
                     ...taskResponse.data,
-                    dueDate: taskResponse.data.dueDate || "",
+                    dueDate: taskResponse.data.due_date || "", // Map due_date to dueDate
+                    category: taskResponse.data.category ? {
+                        value: taskResponse.data.category.id,
+                        label: taskResponse.data.category.name,
+                    } : null,
                 };
                 setTask(taskData);
                 setInitialTask(taskData); // Store initial task state
@@ -94,7 +105,7 @@ export default function TaskView() {
     const handleCategorySelect = (selectedOption) => {
         setTask({
             ...task,
-            category: selectedOption.value,
+            category: selectedOption,
         });
     };
 
@@ -125,19 +136,22 @@ export default function TaskView() {
         }
 
         try {
+            // Prepare the payload with the correct field names and data types
             const taskData = {
-                ...task,
+                title: task.title,
+                description: task.description,
+                priority: task.priority,
+                completed: task.completed,
+                category: task.category ? { name: task.category.label } : null, // Map category to the expected format
+                category_id: task.category ? task.category.value : null, // Include category_id
                 due_date: task.dueDate, // Use the correct field name and format
+                order: task.order, // Include the order field
             };
 
-            console.log("Task data being sent:", taskData);
+            console.log("Task data being sent:", taskData); // Log the payload
 
-            const response = await axios.put(`${API_BASE_URL}/tasks/${id}/`, taskData, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            // Dispatch the updateTask action
+            await dispatch(updateTask(id, taskData));
 
             toast.success("Task updated successfully!");
             navigate("/dashboard");
@@ -151,11 +165,9 @@ export default function TaskView() {
     const handleDelete = async () => {
         if (window.confirm("Are you sure you want to delete this task?")) {
             try {
-                await axios.delete(`${API_BASE_URL}/tasks/${id}/`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
+                // Dispatch the deleteTask action
+                await dispatch(deleteTask(id));
+
                 toast.success("Task deleted successfully!");
                 navigate("/dashboard");
             } catch (error) {
@@ -165,12 +177,44 @@ export default function TaskView() {
         }
     };
 
+    // Handle marking the task as completed
+    const handleMarkAsCompleted = async () => {
+        try {
+            const updatedTask = { ...task, completed: true }; // Set completed to true
+
+            // Prepare the payload with the correct field names and data types
+            const taskData = {
+                title: updatedTask.title,
+                description: updatedTask.description,
+                priority: updatedTask.priority,
+                completed: updatedTask.completed,
+                category: updatedTask.category ? { name: updatedTask.category.label } : null, // Map category to the expected format
+                category_id: updatedTask.category ? updatedTask.category.value : null, // Include category_id
+                due_date: updatedTask.dueDate, // Use the correct field name and format
+                order: updatedTask.order, // Include the order field
+            };
+
+            console.log("Task data being sent:", taskData); // Log the payload
+
+            // Dispatch the updateTask action
+            await dispatch(updateTask(id, taskData));
+
+            // Update the local state to reflect the change
+            setTask(updatedTask);
+            toast.success("Task marked as completed!");
+            navigate("/dashboard");
+        } catch (error) {
+            console.error("Error marking task as completed:", error);
+            toast.error("Failed to mark task as completed.");
+        }
+    };
+
     if (loading) {
         return <div className={taskViewStyling.loading}>Loading task details...</div>;
     }
 
     // Find the default category and priority objects for the dropdown
-    const defaultCategory = categories.find(cat => cat.value === task.category) || null;
+    const defaultCategory = categories.find(cat => cat.value === task.category?.value) || null;
     const defaultPriority = priorities.find(p => p.value === task.priority) || priorities[0];
 
     return (
@@ -247,6 +291,14 @@ export default function TaskView() {
                         >
                             Delete Task
                         </button>
+                        {!task.completed && ( // Only show the button if the task is not already completed
+                            <button
+                                className={taskViewStyling.addTaskButton}
+                                onClick={handleMarkAsCompleted}
+                            >
+                                Mark as Completed
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>

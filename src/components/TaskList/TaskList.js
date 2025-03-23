@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux"; // Add useDispatch
+import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
@@ -8,11 +8,7 @@ import { ReactComponent as Drag } from "../../assets/icons/drag.svg";
 import { ReactComponent as Click } from "../../assets/icons/click.svg";
 import { ReactComponent as Save } from "../../assets/icons/save.svg";
 import SortableTaskItem from "../SortableTaskItem/SortableTaskItem";
-import axios from 'axios';
-import { fetchTasks } from "../../store/tasks/taskActions";
-
-// The base url
-const API_BASE_URL = 'http://localhost:8000/api';
+import { fetchTasks, bulkUpdateTasks } from "../../store/tasks/taskActions"; // Import fetchTasks and bulkUpdateTasks
 
 export default function TaskList({ onSaveOrder }) {
     const [taskItems, setTaskItems] = useState([]);
@@ -54,6 +50,12 @@ export default function TaskList({ onSaveOrder }) {
                 const newIndex = items.findIndex(item => item.id === over.id);
 
                 const newItems = arrayMove(items, oldIndex, newIndex);
+
+                // Update the order field for each task
+                newItems.forEach((task, index) => {
+                    task.order = index;
+                });
+
                 setHasChanged(true);
                 return newItems;
             });
@@ -65,12 +67,11 @@ export default function TaskList({ onSaveOrder }) {
         if (!hasChanged) return;
 
         try {
-            const token = localStorage.getItem('token');
-            const response = await axios.put(`${API_BASE_URL}/tasks/bulk_update/`, taskItems, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            // Dispatch the bulkUpdateTasks action
+            await dispatch(bulkUpdateTasks(taskItems));
+
+            // Refetch tasks to update the UI
+            await dispatch(fetchTasks());
 
             toast.success("Task order saved successfully!");
             setHasChanged(false);
