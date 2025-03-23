@@ -1,0 +1,94 @@
+.aboutContainer {
+    width: 100%;
+    display: flex;
+    padding: 2em;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+.skillsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 100%; /* Prevent overflow */
+}
+
+.sectionTitle {
+    border-bottom: 2px solid var(--primary-text-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5em;
+    color: var(--primary-text-color-hover);
+}
+
+.projectSection {
+    margin-bottom: 2rem;
+}
+
+.sectionHeading {
+    color: var(--primary-text-color);
+}
+
+.featuresList {
+    line-height: 1.6;
+    list-style: none;
+}
+
+.developerSection {
+    display: flex;
+    flex-direction: column;
+}
+
+.jobEntry {
+    margin-bottom: 1rem;
+}
+
+.jobTitle {
+    margin: 0.5rem 0;
+    color: var(--primary-text-color);
+}
+
+.jobPeriod {
+    margin: 0;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.skillsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.skillTag {
+    padding: 0.4rem 0.8rem;
+    background-color: var(--primary-text-color);
+    color: white;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.contactLinks {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.contactLink {
+    display: flex;
+    align-items: center;
+    color: var(--primary-text-color);
+    text-decoration: none;
+}
+
+.backendLink {
+    color: var(--primary-text-color);
+    text-decoration: none;
+}
+
+.contactLink:hover {
+    text-decoration: underline;
+}
+
+.subsection {
+    margin-bottom: 1rem;
+}

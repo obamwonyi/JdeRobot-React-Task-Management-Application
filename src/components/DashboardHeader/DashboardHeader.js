@@ -13,8 +13,6 @@ export default function DashboardHeader( { userName } ) {
 
             <div className={dashboardHeaderStyles.linksDiv}>
 
-                <Link to="/" className={dashboardHeaderStyles.link}>Home</Link>
-
                 <Link to="/create_task" className={dashboardHeaderStyles.link}>Creat Task</Link>
 
                 <Link to="/about" className={dashboardHeaderStyles.link}>About</Link>

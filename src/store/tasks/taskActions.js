@@ -15,7 +15,7 @@ import {
     CLEAR_TASK_ERRORS
 } from './taskTypes';
 
-// The base url
+// The base url for my django backend
 const API_BASE_URL = 'http://localhost:8000/api';
 
 // Fetch all tasks for the current user
@@ -34,10 +34,7 @@ export const fetchTasks = () => async (dispatch, getState) => {
             }
         });
 
-        // Log the API response structure
-        console.log('API response for tasks:', response.data);
-
-        // Ensure the payload is an array
+        // Ensures the payload is an array
         const tasksArray = Array.isArray(response.data) ? response.data :
             (response.data.results ? response.data.results : []);
 
@@ -73,8 +70,6 @@ export const addTask = (taskData) => async (dispatch, getState) => {
 
     try {
         const token = getState().auth.token;
-        console.log('Sending task data:', taskData);
-        console.log('Authorization token:', token);
 
         const response = await axios.post(`${API_BASE_URL}/tasks/`, taskData, {
             headers: {
@@ -83,8 +78,6 @@ export const addTask = (taskData) => async (dispatch, getState) => {
             }
         });
 
-        console.log('Response data:', response.data);
-
         dispatch({
             type: ADD_TASK_SUCCESS,
             payload: response.data
@@ -92,18 +85,11 @@ export const addTask = (taskData) => async (dispatch, getState) => {
 
         return response.data;
     } catch (error) {
-        console.error('Error response:', error.response?.data);
 
-        // More detailed error handling
         let errorMessage = 'Failed to create task';
 
         if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            console.error('Error status:', error.response.status);
-            console.error('Error data:', error.response.data);
 
-            // Handle different error formats
             if (error.response.data?.detail) {
                 errorMessage = error.response.data.detail;
             } else if (error.response.data?.error) {
@@ -117,8 +103,6 @@ export const addTask = (taskData) => async (dispatch, getState) => {
                     .join('; ');
             }
         } else if (error.request) {
-            // The request was made but no response was received
-            console.error('No response received:', error.request);
             errorMessage = 'No response from server';
         } else {
             // Something happened in setting up the request that triggered an Error
