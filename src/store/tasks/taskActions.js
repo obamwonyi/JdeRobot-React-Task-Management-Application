@@ -45,7 +45,6 @@ export const fetchTasks = () => async (dispatch, getState) => {
 
         return tasksArray;
     } catch (error) {
-        console.error('Error fetching tasks:', error);
 
         const errorMessage = error.response?.data?.error ||
             error.response?.data?.detail ||
@@ -105,8 +104,6 @@ export const addTask = (taskData) => async (dispatch, getState) => {
         } else if (error.request) {
             errorMessage = 'No response from server';
         } else {
-            // Something happened in setting up the request that triggered an Error
-            console.error('Error message:', error.message);
             errorMessage = error.message;
         }
 
@@ -115,7 +112,6 @@ export const addTask = (taskData) => async (dispatch, getState) => {
             payload: errorMessage
         });
 
-        // Return the error so the component can handle it
         throw new Error(errorMessage);
     }
 };

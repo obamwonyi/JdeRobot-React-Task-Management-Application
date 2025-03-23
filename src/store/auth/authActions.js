@@ -34,9 +34,6 @@ export const loginUser = (credentials) => async (dispatch) => {
         sessionStorage.setItem('access_token', access);
         sessionStorage.setItem('refresh_token', refresh);
 
-        // Log tokens for debugging (remove in production)
-        console.log('Tokens received:', { access, refresh });
-
         dispatch({
             type: LOGIN_SUCCESS,
             payload: {
@@ -48,7 +45,6 @@ export const loginUser = (credentials) => async (dispatch) => {
 
         return { success: true };
     } catch (error) {
-        console.error('Login error:', error.response?.data || error.message);
         const errorMessage = error.response?.data?.error || error.response?.data?.detail || 'Login failed';
         dispatch({
             type: LOGIN_FAILURE,
@@ -135,7 +131,6 @@ export const fetchUserProfile = () => async (dispatch, getState) => {
 
         return response.data;
     } catch (error) {
-        console.error('Fetch user error:', error.response?.data || error.message);
         const errorMessage = error.response?.data?.error || error.response?.data?.detail || 'Failed to fetch user profile';
         dispatch({
             type: FETCH_USER_FAILURE,
@@ -153,7 +148,7 @@ export const fetchUserProfile = () => async (dispatch, getState) => {
                 });
                 return userData;
             } catch (e) {
-                console.error('Error parsing cached user data', e);
+                // removed the error for cleanup
             }
         }
 
@@ -196,7 +191,6 @@ export const refreshToken = () => async (dispatch, getState) => {
 
         return access;
     } catch (error) {
-        console.error('Token refresh error:', error.response?.data || error.message);
         // If refresh fails, log the user out
         dispatch(logoutUser());
         throw error;

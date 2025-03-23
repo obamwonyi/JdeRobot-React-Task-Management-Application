@@ -1,4 +1,3 @@
-// src/store/tasks/taskReducer.js
 import {
     FETCH_TASKS_REQUEST,
     FETCH_TASKS_SUCCESS,
@@ -22,8 +21,6 @@ const initialState = {
 };
 
 export default function taskReducer(state = initialState, action) {
-    console.log('Current state:', state);
-    console.log('Action:', action);
 
     switch (action.type) {
         case FETCH_TASKS_REQUEST:
