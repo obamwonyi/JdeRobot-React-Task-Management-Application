@@ -147,7 +147,7 @@ export default function TaskView() {
                 order: task.order,
             };
 
-            console.log("Task data being sent (handleSubmit):", taskData); // Log the payload
+            // console.log("Task data being sent (handleSubmit):", taskData); // Log the payload
 
             // Dispatch the updateTask action
             await dispatch(updateTask(id, taskData));
